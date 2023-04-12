@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.ltu.m7019e.moviebrowz.database.Movies
 import com.ltu.m7019e.moviebrowz.databinding.FragmentMovieListBinding
 import com.ltu.m7019e.moviebrowz.databinding.MovieListItemBinding
@@ -33,6 +34,10 @@ class MovieListFragment : Fragment() {
             val movieListItemBinding: MovieListItemBinding = DataBindingUtil.inflate(inflater, R.layout.movie_list_item, container, false)
             movieListItemBinding.movie = movie
             binding.movieListLl.addView(movieListItemBinding.root)
+            movieListItemBinding.movieListItemCl.setOnClickListener {
+                println(movie.title)
+                findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            }
         }
 
         return binding.root
@@ -42,6 +47,9 @@ class MovieListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /*binding.movieListLl.setOnClickListener {
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        }*/
     }
 
     override fun onDestroyView() {
