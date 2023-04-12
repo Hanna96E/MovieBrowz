@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.ltu.m7019e.moviebrowz.FirstFragment"
+        android:name="com.ltu.m7019e.moviebrowz.MovieListFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_movie_list">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
