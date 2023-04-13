@@ -36,7 +36,10 @@ class MovieListFragment : Fragment() {
             binding.movieListLl.addView(movieListItemBinding.root)
             movieListItemBinding.movieListItemCl.setOnClickListener {
                 println(movie.title)
-                findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+                val movieId = movie.posterPath
+                val action = MovieListFragmentDirections.actionFirstFragmentToSecondFragment(movieId)
+                findNavController().navigate(action)
+                //findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
             }
         }
 
