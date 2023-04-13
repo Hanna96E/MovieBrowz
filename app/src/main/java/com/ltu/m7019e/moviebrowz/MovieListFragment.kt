@@ -6,15 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.ltu.m7019e.moviebrowz.database.Movies
 import com.ltu.m7019e.moviebrowz.databinding.FragmentMovieListBinding
 import com.ltu.m7019e.moviebrowz.databinding.MovieListItemBinding
+import com.ltu.m7019e.moviebrowz.viewmodel.MovieListViewModel
+import com.ltu.m7019e.moviebrowz.viewmodel.MovieListViewModelFactory
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class MovieListFragment : Fragment() {
+
+    private lateinit var viewModel: MovieListViewModel
+    private lateinit var viewModelFactory: MovieListViewModelFactory
 
     private var _binding: FragmentMovieListBinding? = null
 
@@ -26,20 +31,30 @@ class MovieListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_list, container, false)
 
-        val movies = Movies()
+        // Inflate the layout for this fragment
+        _binding = FragmentMovieListBinding.inflate(inflater)
 
-        movies.list.forEach{movie ->
-            val movieListItemBinding: MovieListItemBinding = DataBindingUtil.inflate(inflater, R.layout.movie_list_item, container, false)
-            movieListItemBinding.movie = movie
-            binding.movieListLl.addView(movieListItemBinding.root)
-            movieListItemBinding.movieListItemCl.setOnClickListener {
-                println(movie.title)
-                val movieId = movie.posterPath
-                val action = MovieListFragmentDirections.actionFirstFragmentToSecondFragment(movieId)
-                findNavController().navigate(action)
-                //findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        val application = requireNotNull(this.activity).application
+
+        viewModelFactory = MovieListViewModelFactory(application)
+        viewModel = ViewModelProvider(this, viewModelFactory)[MovieListViewModel::class.java]
+
+        viewModel.movieList.observe(
+            viewLifecycleOwner
+        ) { movieList ->
+            movieList.forEach { movie ->
+                val movieListItemBinding: MovieListItemBinding =
+                    DataBindingUtil.inflate(inflater, R.layout.movie_list_item, container, false)
+                movieListItemBinding.movie = movie
+                movieListItemBinding.root.setOnClickListener {
+                    this.findNavController().navigate(
+                        MovieListFragmentDirections.actionMovieListFragmentToMovieDetailFragment(
+                            movie
+                        )
+                    )
+                }
+                binding.movieListLl.addView(movieListItemBinding.root)
             }
         }
 
