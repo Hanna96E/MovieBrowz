@@ -2,11 +2,24 @@
     <string name="app_name">MovieBrowz</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">Movie List</string>
-    <string name="second_fragment_label">Movie Details</string>
+    <string name="movieList_fragment_label">Movie List</string>
+    <string name="movieDetail_fragment_label">Movie Details</string>
+    <string name="movieReview_fragment_label">Movie Reviews</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="review">Reviews</string>
+
+    <!-- Strings for links -->
+    <string name="imdb">IMDb</string>
+    <string name="homepage">Homepage</string>
+
+    <!-- Dialog strings -->
+    <string name="invalid_url">The URL for this link is invalid</string>
+    <string name="invalid_homepage">This movie has no homepage</string>
+    <string name="ok">OK</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

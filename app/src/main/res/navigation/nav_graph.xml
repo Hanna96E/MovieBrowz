@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/MovieListFragment"
         android:name="com.ltu.m7019e.moviebrowz.MovieListFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/movieList_fragment_label"
         tools:layout="@layout/fragment_movie_list">
 
         <action
@@ -18,12 +18,27 @@
     <fragment
         android:id="@+id/MovieDetailFragment"
         android:name="com.ltu.m7019e.moviebrowz.MovieDetailFragment"
-        android:label="@string/second_fragment_label"
+        android:label="@string/movieDetail_fragment_label"
         tools:layout="@layout/fragment_movie_detail">
 
         <action
             android:id="@+id/action_MovieDetailFragment_to_MovieListFragment"
             app:destination="@id/MovieListFragment" />
+        <argument
+            android:name="movie"
+            app:argType="com.ltu.m7019e.moviebrowz.model.Movie" />
+        <action
+            android:id="@+id/action_MovieDetailFragment_to_movieReviewFragment"
+            app:destination="@id/movieReviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieReviewFragment"
+        android:name="com.ltu.m7019e.moviebrowz.MovieReviewFragment"
+        android:label="@string/movieReview_fragment_label"
+        tools:layout="@layout/fragment_movie_review">
+        <action
+            android:id="@+id/action_movieReviewFragment_to_MovieDetailFragment"
+            app:destination="@id/MovieDetailFragment" />
         <argument
             android:name="movie"
             app:argType="com.ltu.m7019e.moviebrowz.model.Movie" />
