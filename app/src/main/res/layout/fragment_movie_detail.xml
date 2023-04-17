@@ -31,7 +31,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@{movie.title}"
-            android:textSize="18sp"
+            android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movie_detail_backdrop" />
 

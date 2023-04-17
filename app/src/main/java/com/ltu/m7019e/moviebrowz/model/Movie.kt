@@ -9,8 +9,8 @@ data class Movie (
         var posterPath:String,
         var backdropPath:String,
         var releaseDate:String,
-        var overview:String
-
+        var overview:String,
+        var detail: MovieDetail
         ) : Parcelable
 
 // create objects inside this class for e.g., genres
