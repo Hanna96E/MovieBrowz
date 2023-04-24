@@ -14,7 +14,20 @@ class MovieListViewModel(application: Application): AndroidViewModel(application
             return _movieList
         }
 
+    private val _navigateToMovieDetail = MutableLiveData<Movie?>()
+    val navigateToMovieDetail: MutableLiveData<Movie?>
+        get() {
+            return _navigateToMovieDetail
+        }
     init {
         _movieList.postValue(Movies().list)
+    }
+
+    fun onMovieListItemClicked(movie: Movie){
+        _navigateToMovieDetail.value = movie
+    }
+
+    fun onMovieDetailNavigated(){
+        _navigateToMovieDetail.value = null
     }
 }
