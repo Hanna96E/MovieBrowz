@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">MovieBrowz</string>
     <string name="action_settings">Settings</string>
+    <string name="action_load_popular_movies">Popular Movies</string>
+    <string name="action_load_top_rated_movies">Top Rated Movies</string>
+    <string name="action_load_saved_movies">Saved Movies</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="movieList_fragment_label">Movie List</string>
     <string name="movieDetail_fragment_label">Movie Details</string>
@@ -12,6 +16,11 @@
     <!-- Strings for links -->
     <string name="imdb">IMDb</string>
     <string name="homepage">Homepage</string>
+
+    <!-- Load, save, remove -->
+    <string name="movies_are_being_loaded">Movies are being Loaded</string>
+    <string name="save_locally">Save Locally</string>
+    <string name="remove_locally">Remove Locally</string>
 
     <!-- Dialog strings -->
     <string name="invalid_url">The URL for this link is invalid</string>

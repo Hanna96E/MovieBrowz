@@ -14,9 +14,6 @@
         android:theme="@style/Theme.MovieBrowz"
         tools:targetApi="31">
         <activity
-            android:name=".PopupWindow"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
