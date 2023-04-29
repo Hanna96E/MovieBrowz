@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="movieVideo"
+            type="com.ltu.m7019e.moviebrowz.model.MovieVideo"/>
+        <variable
+            name="clickListener"
+            type="com.ltu.m7019e.moviebrowz.adapter.VideoListClickListener"/>
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/video_list_item_cv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="#000000">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <WebView
+                android:id="@+id/video"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                android:background="#000000" />
+
+            <Button
+                android:id="@+id/video_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:onClick="@{ () -> clickListener.onClick(movieVideo)}"
+                android:text="@string/video_link"
+                tools:text="Button" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

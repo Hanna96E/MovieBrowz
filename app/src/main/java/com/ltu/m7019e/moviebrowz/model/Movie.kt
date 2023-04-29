@@ -32,6 +32,6 @@ data class Movie(
 
         @ColumnInfo(name = "overview")
         @Json(name = "overview")
-        var overview: String,
+        var overview: String
 
 ) : Parcelable

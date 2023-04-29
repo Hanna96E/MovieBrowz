@@ -16,12 +16,17 @@
     <!-- Strings for links -->
     <string name="imdb">IMDb</string>
     <string name="homepage">Homepage</string>
+    <string name="video_link">Open link</string>
 
     <!-- Load, save, remove -->
     <string name="movies_are_being_loaded">Movies are being Loaded</string>
     <string name="reviews_are_being_loaded">Reviews are being Loaded</string>
-    <string name="save_locally">Save Locally</string>
+    <string name="videos_are_being_loaded">Videos are being Loaded</string>
+    <string name="save_locally">Add Locally</string>
     <string name="remove_locally">Remove Locally</string>
+
+    <!-- images -->
+    <string name="backdrop_image">Backdrop image</string>
 
     <!-- Dialog strings -->
     <string name="invalid_url">The URL for this link is invalid</string>

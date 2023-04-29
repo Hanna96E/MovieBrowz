@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.ltu.m7019e.moviebrowz.database.MovieDatabaseDao
 import com.ltu.m7019e.moviebrowz.model.Movie
 import com.ltu.m7019e.moviebrowz.network.DataFetchStatus
-import com.ltu.m7019e.moviebrowz.network.MovieDetailResponse
 import com.ltu.m7019e.moviebrowz.network.MovieResponse
 import com.ltu.m7019e.moviebrowz.network.TMDBApi
 import kotlinx.coroutines.launch

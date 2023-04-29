@@ -16,7 +16,9 @@
         android:id="@+id/movie_list_item_cl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="@{ () -> clickListener.onClick(movie)}">
+        android:background="#020202"
+        android:onClick="@{ () -> clickListener.onClick(movie)}"
+        app:cardBackgroundColor="#000000">
 
         <ImageView
             android:id="@+id/movie_poster"

@@ -5,7 +5,6 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -15,7 +14,6 @@ import com.ltu.m7019e.moviebrowz.adapter.MovieListClickListener
 import com.ltu.m7019e.moviebrowz.database.MovieDatabase
 import com.ltu.m7019e.moviebrowz.database.MovieDatabaseDao
 import com.ltu.m7019e.moviebrowz.databinding.FragmentMovieListBinding
-import com.ltu.m7019e.moviebrowz.databinding.MovieListItemBinding
 import com.ltu.m7019e.moviebrowz.network.DataFetchStatus
 import com.ltu.m7019e.moviebrowz.viewmodel.MovieListViewModel
 import com.ltu.m7019e.moviebrowz.viewmodel.MovieListViewModelFactory
