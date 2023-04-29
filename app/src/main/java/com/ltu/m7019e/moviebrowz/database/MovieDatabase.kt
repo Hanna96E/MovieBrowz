@@ -7,8 +7,9 @@ import androidx.room.RoomDatabase
 import com.ltu.m7019e.moviebrowz.model.Genre
 import com.ltu.m7019e.moviebrowz.model.Movie
 import com.ltu.m7019e.moviebrowz.model.MovieDetail
+import com.ltu.m7019e.moviebrowz.model.MovieGenre
 
-@Database(entities = [Movie::class, MovieDetail::class, Genre::class], version = 1, exportSchema = false)
+@Database(entities = [Movie::class, MovieDetail::class, Genre::class, MovieGenre::class], version = 1, exportSchema = false)
 abstract class MovieDatabase : RoomDatabase() {
     abstract val movieDatabaseDao: MovieDatabaseDao
 

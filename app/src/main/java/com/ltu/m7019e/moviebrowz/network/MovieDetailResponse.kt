@@ -1,6 +1,6 @@
 package com.ltu.m7019e.moviebrowz.network
 
-import com.ltu.m7019e.moviebrowz.model.Movie
+import com.ltu.m7019e.moviebrowz.model.Genre
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -13,6 +13,6 @@ class MovieDetailResponse {
     @Json(name = "homepage")
     var homepage: String = ""
 
-    /*@Json(name = "genres")
-    var genres: Int = 0*/
+    @Json(name = "genres")
+    var genres: List<Genre> = listOf()
 }

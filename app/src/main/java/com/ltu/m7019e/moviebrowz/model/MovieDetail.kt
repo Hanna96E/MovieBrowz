@@ -37,7 +37,4 @@ data class MovieDetail (
                 return genreNames.joinToString(separator = " | ")
         }*/
 
-        fun getImdbLink(): String{
-                return IMDB_BASE_URL + imdbId
-        }
 }

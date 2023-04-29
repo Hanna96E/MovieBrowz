@@ -12,12 +12,10 @@ import kotlinx.parcelize.Parcelize
 data class Genre (
         @PrimaryKey()
         @Json(name = "id")
-        var id: Int,
+        var id: Long,
 
         @ColumnInfo(name = "name")
         @Json(name = "name")
         var name: String
+
         ): Parcelable
-{
-        override fun toString(): String = name
-}
