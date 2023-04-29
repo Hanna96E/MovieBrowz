@@ -7,6 +7,9 @@
         <variable
             name="movie"
             type="com.ltu.m7019e.moviebrowz.model.Movie" />
+        <variable
+            name="viewModel"
+            type="com.ltu.m7019e.moviebrowz.viewmodel.MovieReviewViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,6 +17,14 @@
         android:layout_height="match_parent"
         tools:context=".MovieReviewFragment">
 
+        <ImageView
+            android:id="@+id/review_status_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/reviews_are_being_loaded"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <Button
             android:id="@+id/back_to_movie_detail"

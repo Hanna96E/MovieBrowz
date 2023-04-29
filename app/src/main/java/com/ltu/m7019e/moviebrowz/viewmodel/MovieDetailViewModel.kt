@@ -52,6 +52,12 @@ class MovieDetailViewModel(
             return _dataFetchStatus
         }
 
+    private val _navigateToMovieReview = MutableLiveData<Movie?>()
+    val navigateToMovieReview: MutableLiveData<Movie?>
+        get() {
+            return _navigateToMovieReview
+        }
+
     init {
         setIsFavorite(movie)
     }

@@ -23,18 +23,4 @@ data class MovieDetail (
         @Json(name = "homepage")
         var homepage: String,
 
-        /*@ColumnInfo(name = "genres")
-        @Json(name = "genres")
-        var genres: List<Genre>*/
-
         ) : Parcelable
-{
-        /*fun genresToString(): String{
-                val genreNames = mutableListOf<String>()
-                genres.forEach{genre: Genre ->
-                        genreNames.add(genre.name)
-                }
-                return genreNames.joinToString(separator = " | ")
-        }*/
-
-}

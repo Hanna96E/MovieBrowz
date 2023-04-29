@@ -35,17 +35,3 @@ data class Movie(
         var overview: String,
 
 ) : Parcelable
-
-
-/*@Parcelize
-data class Movie (
-        var id: Int,
-        var title:String,
-        var posterPath:String,
-        var backdropPath:String,
-        var releaseDate:String,
-        var overview:String,
-        var detail: MovieDetail
-        ) : Parcelable*/
-
-// create objects inside this class for e.g., genres

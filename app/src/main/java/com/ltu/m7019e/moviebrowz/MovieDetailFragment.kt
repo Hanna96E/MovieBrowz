@@ -112,6 +112,5 @@ class MovieDetailFragment : Fragment() {
         binding.movieReview.setOnClickListener {
             findNavController().navigate(MovieDetailFragmentDirections.actionMovieDetailFragmentToMovieReviewFragment(movie))
         }
-
     }
 }
