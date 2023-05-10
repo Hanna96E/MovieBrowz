@@ -1,35 +1,39 @@
 package com.ltu.m7019e.moviebrowz.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.ltu.m7019e.moviebrowz.model.Genre
-import com.ltu.m7019e.moviebrowz.model.Movie
-import com.ltu.m7019e.moviebrowz.model.MovieDetail
-import com.ltu.m7019e.moviebrowz.model.MovieGenre
+import com.ltu.m7019e.moviebrowz.model.*
 
 @Dao
 interface MovieDatabaseDao {
     // Movie
-    @Insert
-    suspend fun insert(movie: Movie)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(movie: Movie)
 
     @Delete
-    suspend fun delete(movie: Movie)
+    fun delete(movie: Movie)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(movieList: List<Movie>)
+
+    @Query("DELETE FROM movies")
+    fun deleteAllMovies()
 
     @Query("SELECT * from movies ORDER BY id ASC")
-    suspend fun getAllMovies(): List<Movie>
-
-    @Query("SELECT EXISTS(SELECT * from movies WHERE id = :id)")
-    suspend fun isFavorite(id: Long): Boolean
+    fun getAllMovies(): LiveData<List<Movie>>
 
     // MovieDetail
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(movieDetail: MovieDetail)
 
     @Delete
     suspend fun delete(movieDetail: MovieDetail)
 
     @Query("SELECT * from movieDetails WHERE id = :id")
-    suspend fun getMovieDetail(id: Long): MovieDetail
+    fun getMovieDetail(id: Long): LiveData<MovieDetail>
+
+    @Query("SELECT * from movieDetails ORDER BY id ASC")
+    fun getAllMovieDetails(): LiveData<List<MovieDetail>>
 
     // Genre
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -39,7 +43,7 @@ interface MovieDatabaseDao {
     suspend fun delete(genre: Genre)
 
     @Query("SELECT * from genres WHERE id = :id")
-    suspend fun getGenre(id: Long): Genre
+    fun getGenre(id: Long): LiveData<Genre>
 
     @Insert
     suspend fun insert(movieGenre: MovieGenre)
@@ -48,8 +52,34 @@ interface MovieDatabaseDao {
     suspend fun delete(movieGenre: MovieGenre)
 
     @Query("SELECT * from movieGenres WHERE movieId = :movieId")
-    suspend fun getMovieGenresFromMovieId(movieId: Long): List<MovieGenre>
+    fun getMovieGenresFromMovieId(movieId: Long): LiveData<List<MovieGenre>>
 
     @Query("SELECT * from movieGenres WHERE genreId = :genreId")
-    suspend fun getMovieGenresFromGenreId(genreId: Long): List<MovieGenre>
+    fun getMovieGenresFromGenreId(genreId: Long): List<MovieGenre>
+
+    // cached movie
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(cachedMovie: CachedMovie)
+
+    @Delete
+    fun delete(cachedMovie: CachedMovie)
+
+    @Query("DELETE FROM cachedMovies")
+    fun deleteAllCachedMovies()
+
+    @Query("SELECT * from cachedMovies ORDER BY id ASC")
+    fun getAllCachedMovies(): List<CachedMovie>
+
+    // saved movie
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(savedMovie: SavedMovie)
+
+    @Delete
+    fun delete(savedMovie: SavedMovie)
+
+    @Query("SELECT EXISTS(SELECT * from savedMovies WHERE id = :id)")
+    suspend fun isFavorite(id: Long): Boolean
+
+    @Query("SELECT * from savedMovies ORDER BY id ASC")
+    fun getAllSavedMovies(): List<SavedMovie>
 }

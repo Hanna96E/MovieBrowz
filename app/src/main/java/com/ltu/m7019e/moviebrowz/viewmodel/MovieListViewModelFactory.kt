@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.ltu.m7019e.moviebrowz.database.MovieDatabaseDao
 import java.lang.IllegalArgumentException
 
-class MovieListViewModelFactory(private val movieDatabaseDao: MovieDatabaseDao, private val application: Application): ViewModelProvider.Factory {
+class MovieListViewModelFactory(private val application: Application): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(MovieListViewModel::class.java)) {
-            return MovieListViewModel(movieDatabaseDao, application) as T
+            return MovieListViewModel(application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

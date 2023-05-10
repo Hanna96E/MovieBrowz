@@ -15,6 +15,7 @@ import com.ltu.m7019e.moviebrowz.database.MovieDatabase
 import com.ltu.m7019e.moviebrowz.database.MovieDatabaseDao
 import com.ltu.m7019e.moviebrowz.databinding.FragmentMovieListBinding
 import com.ltu.m7019e.moviebrowz.network.DataFetchStatus
+import com.ltu.m7019e.moviebrowz.repository.MovieListType
 import com.ltu.m7019e.moviebrowz.viewmodel.MovieListViewModel
 import com.ltu.m7019e.moviebrowz.viewmodel.MovieListViewModelFactory
 
@@ -28,20 +29,21 @@ class MovieListFragment : Fragment() {
 
     private lateinit var movieDatabaseDao: MovieDatabaseDao
 
-    private var _binding: FragmentMovieListBinding? = null;
+    private var lastSelectedMenuOption = R.id.action_load_popular_movies
+
+    private var _binding: FragmentMovieListBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentMovieListBinding.inflate(inflater)
 
         val application = requireNotNull(this.activity).application
-        movieDatabaseDao = MovieDatabase.getInstance(application).movieDatabaseDao
 
-        viewModelFactory = MovieListViewModelFactory(movieDatabaseDao, application)
+        viewModelFactory = MovieListViewModelFactory(application)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MovieListViewModel::class.java)
 
         val movieListAdapter = MovieListAdapter(
@@ -86,6 +88,20 @@ class MovieListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        when(lastSelectedMenuOption){
+            R.id.action_load_saved_movies -> {
+                viewModel.setMovieListType(MovieListType.SAVED)
+            }
+
+            R.id.action_load_top_rated_movies -> {
+                viewModel.setMovieListType(MovieListType.TOP_RATED)
+            }
+        }
+        viewModel.refreshDataFromRepository()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // The usage of an interface lets you inject your own implementation
         val menuHost: MenuHost = requireActivity()
@@ -104,17 +120,22 @@ class MovieListFragment : Fragment() {
                 // Handle the menu selection
                 when (menuItem.itemId) {
                     R.id.action_load_popular_movies -> {
-                        viewModel.getPopularMovies()
+                        lastSelectedMenuOption = R.id.action_load_popular_movies
+                        viewModel.setMovieListType(MovieListType.POPULAR)
                     }
                     R.id.action_load_top_rated_movies -> {
-                        viewModel.getTopRatedMovies()
+                        lastSelectedMenuOption = R.id.action_load_top_rated_movies
+                        viewModel.setMovieListType(MovieListType.TOP_RATED)
                     }
                     R.id.action_load_saved_movies -> {
-                        viewModel.getSavedMovies()
+                        lastSelectedMenuOption = R.id.action_load_saved_movies
+                        viewModel.setMovieListType(MovieListType.SAVED)
                     }
                 }
+                viewModel.refreshDataFromRepository()
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
+
 }

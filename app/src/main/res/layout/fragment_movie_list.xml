@@ -31,8 +31,7 @@
             android:id="@+id/movie_list_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:scrollbars="vertical" />
     </FrameLayout>
    <!-- <ScrollView
         android:layout_width="match_parent"

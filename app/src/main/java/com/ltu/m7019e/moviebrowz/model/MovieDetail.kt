@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity(tableName = "movieDetails")
 data class MovieDetail (
-        @PrimaryKey()
+        @PrimaryKey
         @Json(name = "id")
         var id: Long = 0L,
 

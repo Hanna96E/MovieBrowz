@@ -40,7 +40,7 @@ private val movieListRetrofit = Retrofit.Builder()
     .client(
         OkHttpClient.Builder()
             .addInterceptor(getLoggerIntercepter())
-            .connectTimeout(20, TimeUnit.SECONDS)
+            .connectTimeout(5, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
             .build()
     )

@@ -5,14 +5,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.ltu.m7019e.moviebrowz.database.MovieDatabaseDao
+import com.ltu.m7019e.moviebrowz.database.MovieDatabase
 import com.ltu.m7019e.moviebrowz.model.Movie
 import com.ltu.m7019e.moviebrowz.network.DataFetchStatus
-import com.ltu.m7019e.moviebrowz.network.MovieResponse
-import com.ltu.m7019e.moviebrowz.network.TMDBApi
+import com.ltu.m7019e.moviebrowz.repository.MovieListType
+import com.ltu.m7019e.moviebrowz.repository.MovieRepository
 import kotlinx.coroutines.launch
+import java.io.IOException
 
-class MovieListViewModel(private val movieDatabaseDao: MovieDatabaseDao, application: Application) : AndroidViewModel(application) {
+class MovieListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _dataFetchStatus = MutableLiveData<DataFetchStatus>()
     val dataFetchStatus: LiveData<DataFetchStatus>
@@ -20,11 +21,15 @@ class MovieListViewModel(private val movieDatabaseDao: MovieDatabaseDao, applica
             return _dataFetchStatus
         }
 
-    private val _movieList = MutableLiveData<List<Movie>>()
-    val movieList: LiveData<List<Movie>>
+    private val _movieListType = MutableLiveData<MovieListType>()
+    private val movieListType: LiveData<MovieListType>
         get() {
-            return _movieList
+            return _movieListType
         }
+
+    private val movieRepository = MovieRepository(MovieDatabase.getInstance(application))
+    var movieList = movieRepository.movies
+
 
     private val _navigateToMovieDetail = MutableLiveData<Movie?>()
     val navigateToMovieDetail: MutableLiveData<Movie?>
@@ -33,8 +38,28 @@ class MovieListViewModel(private val movieDatabaseDao: MovieDatabaseDao, applica
         }
 
     init {
-        getPopularMovies()
+        _movieListType.value = MovieListType.POPULAR
+        refreshDataFromRepository()
+        //getPopularMovies()
         _dataFetchStatus.value = DataFetchStatus.LOADING
+    }
+
+
+    fun refreshDataFromRepository() {
+        viewModelScope.launch {
+            try {
+                movieRepository.refreshMovies(movieListType)
+                _dataFetchStatus.value = DataFetchStatus.DONE
+            } catch (networkError: IOException) {
+                if (movieList.value.isNullOrEmpty()) {
+                    _dataFetchStatus.value = DataFetchStatus.ERROR
+                }
+            }
+        }
+    }
+
+    fun setMovieListType(movieListType: MovieListType){
+        _movieListType.value = movieListType
     }
 
     fun onMovieListItemClicked(movie: Movie) {
@@ -43,39 +68,5 @@ class MovieListViewModel(private val movieDatabaseDao: MovieDatabaseDao, applica
 
     fun onMovieDetailNavigated() {
         _navigateToMovieDetail.value = null
-    }
-
-    fun getPopularMovies() {
-        viewModelScope.launch {
-            try {
-                val movieResponse: MovieResponse =
-                    TMDBApi.movieListRetrofitService.getPopularMovies()
-                _movieList.value = movieResponse.results
-                _dataFetchStatus.value = DataFetchStatus.DONE
-            } catch (e: Exception) {
-                _dataFetchStatus.value = DataFetchStatus.ERROR
-                _movieList.value = arrayListOf()
-            }
-        }
-    }
-
-    fun getTopRatedMovies() {
-        viewModelScope.launch {
-            try {
-                val movieResponse: MovieResponse =
-                    TMDBApi.movieListRetrofitService.getTopRatedMovies()
-                _movieList.value = movieResponse.results
-                _dataFetchStatus.value = DataFetchStatus.DONE
-            } catch (e: Exception) {
-                _dataFetchStatus.value = DataFetchStatus.ERROR
-                _movieList.value = arrayListOf()
-            }
-        }
-    }
-
-    fun getSavedMovies() {
-        viewModelScope.launch {
-            _movieList.value = movieDatabaseDao.getAllMovies()
-        }
     }
 }

@@ -42,9 +42,9 @@ class MovieDetailFragment : Fragment() {
         _binding = FragmentMovieDetailBinding.inflate(inflater)
         binding.lifecycleOwner = this
         movie = MovieDetailFragmentArgs.fromBundle(requireArguments()).movie
-
         val application = requireNotNull(this.activity).application
         movieDatabaseDao = MovieDatabase.getInstance(application).movieDatabaseDao
+
 
         viewModelFactory = MovieDetailViewModelFactory(movieDatabaseDao, application, movie)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MovieDetailViewModel::class.java)

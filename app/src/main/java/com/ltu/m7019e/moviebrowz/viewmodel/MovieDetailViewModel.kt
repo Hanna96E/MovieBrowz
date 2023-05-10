@@ -6,13 +6,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ltu.m7019e.moviebrowz.database.MovieDatabaseDao
-import com.ltu.m7019e.moviebrowz.model.Genre
-import com.ltu.m7019e.moviebrowz.model.Movie
-import com.ltu.m7019e.moviebrowz.model.MovieDetail
-import com.ltu.m7019e.moviebrowz.model.MovieGenre
+import com.ltu.m7019e.moviebrowz.model.*
 import com.ltu.m7019e.moviebrowz.network.DataFetchStatus
 import com.ltu.m7019e.moviebrowz.network.MovieDetailResponse
 import com.ltu.m7019e.moviebrowz.network.TMDBApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MovieDetailViewModel(
@@ -79,7 +77,7 @@ class MovieDetailViewModel(
             } catch (e: Exception) {
                 _dataFetchStatus.value = DataFetchStatus.ERROR
                 try {
-                    _movieDetail.value = movieDatabaseDao.getMovieDetail(movie.id)
+                    _movieDetail.value = movieDatabaseDao.getMovieDetail(movie.id).value
                     createGenreListFromMovieId(movie)
                 } catch (e: Exception){
                     _movieDetail.value = MovieDetail(0, "", "")
@@ -89,10 +87,21 @@ class MovieDetailViewModel(
         }
     }
 
-    fun onSaveMovieButtonClicked(movie: Movie, movieDetail: MovieDetail, genres:List<Genre>) {
-        viewModelScope.launch {
-            movieDatabaseDao.insert(movie)
-            movieDatabaseDao.insert(movieDetail)
+    fun onSaveMovieButtonClicked(movie: Movie, movieDetail: MovieDetail?, genres:List<Genre>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            movieDatabaseDao.insert(
+                SavedMovie(
+                    id = movie.id,
+                    title = movie.title,
+                    posterPath = movie.posterPath,
+                    backdropPath = movie.backdropPath,
+                    releaseDate = movie.releaseDate,
+                    overview = movie.overview
+                )
+            )
+            if(movieDetail != null){
+                movieDatabaseDao.insert(movieDetail)
+            }
             genres.forEach{ genre ->
                 movieDatabaseDao.insert(genre)
                 movieDatabaseDao.insert(MovieGenre(movie.id,genre.id))
@@ -101,10 +110,21 @@ class MovieDetailViewModel(
         }
     }
 
-    fun onRemoveMovieButtonClicked(movie: Movie, movieDetail: MovieDetail, genres:List<Genre>) {
-        viewModelScope.launch {
-            movieDatabaseDao.delete(movie)
-            movieDatabaseDao.delete(movieDetail)
+    fun onRemoveMovieButtonClicked(movie: Movie, movieDetail: MovieDetail?, genres:List<Genre>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            movieDatabaseDao.delete(
+                SavedMovie(
+                    id = movie.id,
+                    title = movie.title,
+                    posterPath = movie.posterPath,
+                    backdropPath = movie.backdropPath,
+                    releaseDate = movie.releaseDate,
+                    overview = movie.overview
+                )
+            )
+            if(movieDetail != null){
+                movieDatabaseDao.delete(movieDetail)
+            }
             genres.forEach{ genre ->
                 movieDatabaseDao.delete(MovieGenre(movie.id,genre.id))
             }
@@ -116,12 +136,12 @@ class MovieDetailViewModel(
         viewModelScope.launch {
             val genreIds = mutableListOf<Long>()
             val genreList = mutableListOf<Genre>()
-            val movieGenres = movieDatabaseDao.getMovieGenresFromMovieId(movie.id)
-            movieGenres.forEach{movieGenre: MovieGenre ->
+            val movieGenres = movieDatabaseDao.getMovieGenresFromMovieId(movie.id).value
+            movieGenres?.forEach{movieGenre: MovieGenre ->
                 genreIds.add(movieGenre.genreId)
             }
             genreIds.forEach{genreId: Long ->
-                genreList.add(movieDatabaseDao.getGenre(genreId))
+                movieDatabaseDao.getGenre(genreId).value?.let { genreList.add(it) }
             }
             _genreList.value = genreList
             createGenreString()
