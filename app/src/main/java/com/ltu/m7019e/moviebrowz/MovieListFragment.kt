@@ -18,6 +18,7 @@ import com.ltu.m7019e.moviebrowz.network.DataFetchStatus
 import com.ltu.m7019e.moviebrowz.repository.MovieListType
 import com.ltu.m7019e.moviebrowz.viewmodel.MovieListViewModel
 import com.ltu.m7019e.moviebrowz.viewmodel.MovieListViewModelFactory
+import com.ltu.m7019e.moviebrowz.worker.movieListViewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -84,6 +85,8 @@ class MovieListFragment : Fragment() {
                 }
             }
         }
+
+        movieListViewModel = viewModel
 
         return binding.root
     }

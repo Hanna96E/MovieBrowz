@@ -5,11 +5,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.work.*
 import com.ltu.m7019e.moviebrowz.database.MovieDatabase
 import com.ltu.m7019e.moviebrowz.model.Movie
 import com.ltu.m7019e.moviebrowz.network.DataFetchStatus
 import com.ltu.m7019e.moviebrowz.repository.MovieListType
 import com.ltu.m7019e.moviebrowz.repository.MovieRepository
+import com.ltu.m7019e.moviebrowz.worker.RefreshDataWorker
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -37,6 +39,9 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
             return _navigateToMovieDetail
         }
 
+
+    private val workManager = WorkManager.getInstance(application)
+
     init {
         _movieListType.value = MovieListType.POPULAR
         refreshDataFromRepository()
@@ -47,10 +52,22 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun refreshDataFromRepository() {
         viewModelScope.launch {
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+            val workRequest: WorkRequest = OneTimeWorkRequestBuilder<RefreshDataWorker>()
+                .setConstraints(constraints)
+                .build()
             try {
                 movieRepository.refreshMovies(movieListType)
+
+
+                //private val requestId = workRequest.id
+                workManager.cancelAllWork()
                 _dataFetchStatus.value = DataFetchStatus.DONE
             } catch (networkError: IOException) {
+                workManager.enqueue(workRequest)
                 if (movieList.value.isNullOrEmpty()) {
                     _dataFetchStatus.value = DataFetchStatus.ERROR
                 }
