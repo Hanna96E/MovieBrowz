@@ -62,13 +62,11 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
             try {
                 movieRepository.refreshMovies(movieListType)
 
-
-                //private val requestId = workRequest.id
                 workManager.cancelAllWork()
                 _dataFetchStatus.value = DataFetchStatus.DONE
             } catch (networkError: IOException) {
-                workManager.enqueue(workRequest)
                 if (movieList.value.isNullOrEmpty()) {
+                    workManager.enqueue(workRequest)
                     _dataFetchStatus.value = DataFetchStatus.ERROR
                 }
             }
